@@ -15,7 +15,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-// const roomsrRoute = require("./routes/v1/rooms.route")
+// const productsRoute = require("./routes/v1/rooms.route")
 // const accesstoken = require("./routes/v1/token.route");
 
 // app.use("/api/v1/rooms", roomsrRoute)
