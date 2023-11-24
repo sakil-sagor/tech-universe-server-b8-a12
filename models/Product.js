@@ -3,6 +3,11 @@ const validator = require("validator");
 
 const ProductSchema = mongoose.Schema(
   {
+    productId: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
     productName: {
       type: String,
       required: true,
@@ -51,7 +56,13 @@ const ProductSchema = mongoose.Schema(
     },
     tags: [
       {
-        type: String,
+        id: {
+          type: String,
+        },
+        text: {
+          type: String,
+        },
+        _id: false,
       },
     ],
 
@@ -67,10 +78,7 @@ const ProductSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    downVotes: {
-      type: Boolean,
-      default: false,
-    },
+
     featured: {
       type: Boolean,
       default: false,

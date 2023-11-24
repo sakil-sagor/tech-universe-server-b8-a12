@@ -8,17 +8,17 @@ const cookieParser = require("cookie-parser");
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://assignment11-sakil.netlify.app"],
+    origin: ["http://localhost:5173", "https://assignment12-sakil.netlify.app"],
     credentials: true,
   })
 );
 app.use(express.json());
 app.use(cookieParser());
 
-// const productsRoute = require("./routes/v1/rooms.route")
+const productsRoute = require("./routes/v1/products.route");
 // const accesstoken = require("./routes/v1/token.route");
 
-// app.use("/api/v1/rooms", roomsrRoute)
+app.use("/api/v1/product", productsRoute);
 // app.use("/api/v1/accesstoken", accesstoken)
 
 module.exports = app;
