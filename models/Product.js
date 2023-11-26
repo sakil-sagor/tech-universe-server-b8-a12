@@ -70,14 +70,11 @@ const ProductSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    upvotes: {
-      type: Number,
-      default: 0,
-    },
-    downVotes: {
-      type: Number,
-      default: 0,
-    },
+    upvotes: [
+      {
+        type: String,
+      },
+    ],
 
     featured: {
       type: Boolean,
@@ -91,6 +88,7 @@ const ProductSchema = mongoose.Schema(
         reportText: {
           type: String,
         },
+        _id: false,
       },
     ],
 
@@ -108,11 +106,15 @@ const ProductSchema = mongoose.Schema(
             message: "Invalid image URL",
           },
         },
-        name: {
+        userName: {
           type: String,
           default: "",
         },
-        description: {
+        feadback: {
+          type: String,
+          default: "",
+        },
+        userImage: {
           type: String,
           default: "",
         },
@@ -124,6 +126,7 @@ const ProductSchema = mongoose.Schema(
           type: Date,
           default: Date.now,
         },
+        _id: false,
       },
     ],
   },

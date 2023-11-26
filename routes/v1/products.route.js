@@ -5,4 +5,10 @@ const router = express.Router();
 
 router.route("/create").post(productsController.createProduct);
 
+router.route("/all").get(productsController.getAllProduct);
+router.route("/upvote").put(productsController.creatUpVote);
+router.route("/:id").get(productsController.getSingleProduct);
+router.route("/:id/report").put(productsController.createProductReport);
+router.route("/:id/review").put(productsController.createProductReview);
+
 module.exports = router;

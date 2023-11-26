@@ -16,9 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const productsRoute = require("./routes/v1/products.route");
-// const accesstoken = require("./routes/v1/token.route");
 
 app.use("/api/v1/product", productsRoute);
-// app.use("/api/v1/accesstoken", accesstoken)
 
 module.exports = app;
