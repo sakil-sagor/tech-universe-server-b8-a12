@@ -5,13 +5,25 @@ exports.createProductInDb = async (detials) => {
   return result;
 };
 // get all products
-exports.getProductFromDb = async () => {
-  const result = await Product.find({});
-  return result;
+exports.getProductFromDb = async (filters, queries) => {
+  const result = await Product.find(filters)
+    .skip(queries.skip)
+    .limit(queries.limit);
+  // .sort(queries.sortBy);
+  const totalRoom = await Product.countDocuments(filters);
+  const pageCount = Math.ceil(totalRoom / queries.limit);
+  return { result, totalRoom, pageCount };
 };
-// get all products
+
+// get single products
 exports.getSingleProductFromDb = async (id) => {
   const result = await Product.findOne({ _id: id });
+  return result;
+};
+
+// get user products
+exports.getUserProductFromDb = async (userEmail) => {
+  const result = await Product.find({ "ownerInfo.ownerEmail": `${userEmail}` });
   return result;
 };
 
@@ -25,18 +37,15 @@ exports.createUpvoteinDb = async (productId, userEmail) => {
 };
 
 // create report
-
 exports.createReviewInDb = async (id, newreport) => {
-  console.log(id, newreport);
   const result = await Product.updateOne(
     { _id: id },
     { $addToSet: { report: { $each: [newreport] } } }
   );
-  console.log(result);
   return result;
 };
-// create review
 
+// create review
 exports.findProductCreateFeadback = async (id, feadback) => {
   const result = await Product.updateOne(
     { _id: id },
