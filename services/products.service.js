@@ -53,3 +53,8 @@ exports.findProductCreateFeadback = async (id, feadback) => {
   );
   return result;
 };
+// delete product
+exports.deleteProductInDb = async (productId) => {
+  const result = await Product.deleteOne({ _id: productId });
+  return result;
+};

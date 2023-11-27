@@ -13,5 +13,6 @@ router.route("/upvote").put(productsController.creatUpVote);
 router.route("/:id").get(productsController.getSingleProduct);
 router.route("/:id/report").put(productsController.createProductReport);
 router.route("/:id/review").put(productsController.createProductReview);
+router.route("/delteProduct").delete(productsController.deleteProduct);
 
 module.exports = router;

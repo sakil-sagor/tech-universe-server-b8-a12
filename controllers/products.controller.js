@@ -7,6 +7,7 @@ const {
   createReviewInDb,
   findProductCreateFeadback,
   getUserProductFromDb,
+  deleteProductInDb,
 } = require("../services/products.service");
 
 // create product
@@ -45,7 +46,6 @@ exports.createProduct = async (req, res) => {
 
 exports.getAllProduct = async (req, res) => {
   try {
-    console.log(req.query);
     let filters = { ...req.query };
     const excludeFields = ["limit", "sort", "page", "fields", "search"];
     excludeFields.forEach((field) => delete filters[field]);
@@ -157,6 +157,22 @@ exports.createProductReview = async (req, res) => {
   try {
     const { id } = req.params;
     const allProduct = await findProductCreateFeadback(id, req.body);
+    res.status(200).json({
+      status: "success",
+      data: allProduct,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: "Couldn't get the Products",
+    });
+  }
+};
+// delete product
+exports.deleteProduct = async (req, res) => {
+  try {
+    const { productId } = req.query;
+    const allProduct = await deleteProductInDb(productId);
     res.status(200).json({
       status: "success",
       data: allProduct,
