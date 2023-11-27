@@ -58,3 +58,11 @@ exports.deleteProductInDb = async (productId) => {
   const result = await Product.deleteOne({ _id: productId });
   return result;
 };
+// make  product featured
+exports.makeFeaturedInDb = async (productId) => {
+  const result = await Product.updateOne(
+    { _id: productId },
+    { $set: { featured: true } }
+  );
+  return result;
+};
