@@ -9,6 +9,7 @@ const {
   getUserProductFromDb,
   deleteProductInDb,
   makeFeaturedInDb,
+  getReportedProductInDb,
 } = require("../services/products.service");
 
 // create product
@@ -190,6 +191,21 @@ exports.makeFeatured = async (req, res) => {
   try {
     const { productId } = req.query;
     const allProduct = await makeFeaturedInDb(productId);
+    res.status(200).json({
+      status: "success",
+      data: allProduct,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: "Couldn't get the Products",
+    });
+  }
+};
+// Reported  product
+exports.getReportedProduct = async (req, res) => {
+  try {
+    const allProduct = await getReportedProductInDb();
     res.status(200).json({
       status: "success",
       data: allProduct,

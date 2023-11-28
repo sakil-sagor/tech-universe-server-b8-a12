@@ -8,6 +8,7 @@ router.route("/create").post(productsController.createProduct);
 router.route("/all").get(productsController.getAllProduct);
 // get user product
 router.route("/all/:userEmail").get(productsController.getUserProduct);
+router.route("/reportedcontent").get(productsController.getReportedProduct);
 
 router.route("/upvote").put(productsController.creatUpVote);
 router.route("/:id").get(productsController.getSingleProduct);

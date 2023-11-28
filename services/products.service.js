@@ -66,3 +66,22 @@ exports.makeFeaturedInDb = async (productId) => {
   );
   return result;
 };
+
+// Reported  product
+exports.getReportedProductInDb = async () => {
+  const result = await Product.aggregate([
+    {
+      $project: {
+        productName: 1,
+        productId: 1,
+        reportLength: { $size: "$report" },
+      },
+    },
+    {
+      $match: {
+        reportLength: { $gt: 0 },
+      },
+    },
+  ]);
+  return result;
+};
