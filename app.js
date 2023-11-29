@@ -15,8 +15,10 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+const usersRoute = require("./routes/v1/users.route");
 const productsRoute = require("./routes/v1/products.route");
 
 app.use("/api/v1/product", productsRoute);
+app.use("/api/v1/user", usersRoute);
 
 module.exports = app;
