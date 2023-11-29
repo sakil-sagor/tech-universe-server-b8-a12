@@ -22,8 +22,25 @@ exports.getSingleProductFromDb = async (id) => {
 };
 // get featured products
 exports.getFeaturedInDb = async () => {
-  const result = await Product.find({ featured: true });
+  const result = await Product.find({ featured: true }).sort({ createdAt: -1 });
 
+  return result;
+};
+// get treading products
+exports.getTreadingProductFromDb = async () => {
+  const result = await Product.aggregate([
+    {
+      $addFields: {
+        upvotesCount: { $size: "$upvotes" },
+      },
+    },
+    {
+      $sort: { upvotesCount: -1 },
+    },
+    {
+      $limit: 6,
+    },
+  ]);
   return result;
 };
 

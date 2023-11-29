@@ -11,6 +11,7 @@ const {
   makeFeaturedInDb,
   getReportedProductInDb,
   getFeaturedInDb,
+  getTreadingProductFromDb,
 } = require("../services/products.service");
 
 // create product
@@ -85,6 +86,22 @@ exports.getAllProduct = async (req, res) => {
   }
 };
 
+// get treding product
+
+exports.gettreadingProduct = async (req, res) => {
+  try {
+    const singleProduct = await getTreadingProductFromDb();
+    res.status(200).json({
+      status: "success",
+      data: singleProduct,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: "Couldn't get the Products",
+    });
+  }
+};
 // get single product
 
 exports.getSingleProduct = async (req, res) => {
@@ -142,6 +159,7 @@ exports.getUserProduct = async (req, res) => {
 exports.creatUpVote = async (req, res) => {
   try {
     const { productId, userEmail } = req.body;
+    console.log(productId, userEmail);
 
     const allProduct = await createUpvoteinDb(productId, userEmail);
     res.status(200).json({
