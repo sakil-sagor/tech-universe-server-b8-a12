@@ -10,6 +10,7 @@ const {
   deleteProductInDb,
   makeFeaturedInDb,
   getReportedProductInDb,
+  getFeaturedInDb,
 } = require("../services/products.service");
 
 // create product
@@ -94,6 +95,23 @@ exports.getSingleProduct = async (req, res) => {
     res.status(200).json({
       status: "success",
       data: singleProduct,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: "Couldn't get the Products",
+    });
+  }
+};
+// get featured products
+
+exports.getFeaturedProducts = async (req, res) => {
+  try {
+    const featuredProduct = await getFeaturedInDb();
+
+    res.status(200).json({
+      status: "success",
+      data: featuredProduct,
     });
   } catch (error) {
     res.status(400).json({

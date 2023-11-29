@@ -20,6 +20,12 @@ exports.getSingleProductFromDb = async (id) => {
   const result = await Product.findOne({ _id: id });
   return result;
 };
+// get featured products
+exports.getFeaturedInDb = async () => {
+  const result = await Product.find({ featured: true });
+
+  return result;
+};
 
 // get user products
 exports.getUserProductFromDb = async (userEmail) => {

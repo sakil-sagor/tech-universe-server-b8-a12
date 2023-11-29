@@ -6,6 +6,8 @@ const router = express.Router();
 router.route("/create").post(productsController.createProduct);
 
 router.route("/all").get(productsController.getAllProduct);
+// featured products
+router.route("/featuredProducts").get(productsController.getFeaturedProducts);
 // get user product
 router.route("/all/:userEmail").get(productsController.getUserProduct);
 router.route("/reportedcontent").get(productsController.getReportedProduct);
