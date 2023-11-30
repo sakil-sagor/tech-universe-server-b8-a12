@@ -13,21 +13,26 @@ exports.getProductFromDb = async (filters, queries) => {
       },
     },
 
-    // {
-    //   $skip: queries.skip, // Skip documents based on pagination
-    // },
-    // {
-    //   $limit: queries.limit, // Limit the number of documents returned
-    // },
+    {
+      $skip: queries.skip, // Skip documents based on pagination
+    },
+    {
+      $limit: parseInt(queries.limit), // Limit the number of documents returned
+    },
   ]);
-  // .skip(queries.skip)
-  // .limit(queries.limit);
-  // .sort(queries.sortBy);
   const totalRoom = await Product.countDocuments(filters);
   const pageCount = Math.ceil(totalRoom / queries.limit);
-  console.log(result, totalRoom, pageCount);
+
   return { result, totalRoom, pageCount };
-  // return result;
+};
+
+exports.getProductWitoutSearchFromDb = async (queries) => {
+  const result = await Product.find({}).skip(queries.skip).limit(queries.limit);
+
+  const totalRoom = await Product.countDocuments({});
+  const pageCount = Math.ceil(totalRoom / queries.limit);
+
+  return { result, totalRoom, pageCount };
 };
 
 // get single products
@@ -106,7 +111,6 @@ exports.makeFeaturedInDb = async (productId) => {
 };
 // update products
 exports.putUpdateProductinDb = async (productId, details) => {
-  console.log(details);
   const result = await Product.updateOne({ _id: productId }, { $set: details });
   return result;
 };
@@ -116,7 +120,7 @@ exports.getProductsForReviewfromDb = async (filters, queries) => {
   const result = await Product.find(filters)
     .skip(queries.skip)
     .limit(queries.limit)
-    .sort({ "status.pending": 1 });
+    .sort({ status: 1 });
   const totalResult = await Product.countDocuments(filters);
   const pageCount = Math.ceil(totalResult / queries.limit);
   return { result, totalResult, pageCount };
@@ -145,9 +149,9 @@ exports.getReportedProductInDb = async () => {
 exports.makeActiveStatusinDb = async (productId) => {
   const result = await Product.updateOne(
     { _id: productId },
-    { $set: { status: "active" } }
+    { $set: { status: "bactive" } }
   );
-  console.log(result);
+
   return result;
 };
 
@@ -155,8 +159,8 @@ exports.makeActiveStatusinDb = async (productId) => {
 exports.makeRejectStatusinDb = async (productId) => {
   const result = await Product.updateOne(
     { _id: productId },
-    { $set: { status: "reject" } }
+    { $set: { status: "creject" } }
   );
-  console.log(result);
+
   return result;
 };

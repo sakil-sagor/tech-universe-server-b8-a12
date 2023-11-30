@@ -16,6 +16,7 @@ const {
   getProductsForReviewfromDb,
   makeRejectStatusinDb,
   makeActiveStatusinDb,
+  getProductWitoutSearchFromDb,
 } = require("../services/products.service");
 
 // create product
@@ -59,7 +60,7 @@ exports.getAllProduct = async (req, res) => {
     const excludeFields = ["limit", "sort", "page", "fields"];
     excludeFields.forEach((field) => delete filters[field]);
     const { search } = filters;
-    console.log(search);
+
     const queries = {};
     // separate sort and make fit for data query
     if (req.query.sort) {
@@ -80,11 +81,19 @@ exports.getAllProduct = async (req, res) => {
       queries.limit = limit;
     }
 
-    const allProduct = await getProductFromDb(search, queries);
-    res.status(200).json({
-      status: "success",
-      data: allProduct,
-    });
+    if (search) {
+      const allProduct = await getProductFromDb(search, queries);
+      res.status(200).json({
+        status: "success",
+        data: allProduct,
+      });
+    } else {
+      const allProductt = await getProductWitoutSearchFromDb(queries);
+      res.status(200).json({
+        status: "success",
+        data: allProductt,
+      });
+    }
   } catch (error) {
     res.status(400).json({
       status: "fail",
@@ -166,7 +175,6 @@ exports.getUserProduct = async (req, res) => {
 exports.creatUpVote = async (req, res) => {
   try {
     const { productId, userEmail } = req.body;
-    console.log(productId, userEmail);
 
     const allProduct = await createUpvoteinDb(productId, userEmail);
     res.status(200).json({
@@ -320,7 +328,7 @@ exports.getAllProductInReviewPage = async (req, res) => {
 exports.makeActiveStatus = async (req, res) => {
   try {
     const { productId } = req.query;
-    console.log(productId);
+
     const allProduct = await makeActiveStatusinDb(productId);
     res.status(200).json({
       status: "success",
