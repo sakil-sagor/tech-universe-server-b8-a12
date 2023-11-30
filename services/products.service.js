@@ -111,6 +111,17 @@ exports.putUpdateProductinDb = async (productId, details) => {
   return result;
 };
 
+// all product for review page
+exports.getProductsForReviewfromDb = async (filters, queries) => {
+  const result = await Product.find(filters)
+    .skip(queries.skip)
+    .limit(queries.limit)
+    .sort({ "status.pending": 1 });
+  const totalResult = await Product.countDocuments(filters);
+  const pageCount = Math.ceil(totalResult / queries.limit);
+  return { result, totalResult, pageCount };
+};
+
 // Reported  product
 exports.getReportedProductInDb = async () => {
   const result = await Product.aggregate([
@@ -127,5 +138,25 @@ exports.getReportedProductInDb = async () => {
       },
     },
   ]);
+  return result;
+};
+
+// make Active Status
+exports.makeActiveStatusinDb = async (productId) => {
+  const result = await Product.updateOne(
+    { _id: productId },
+    { $set: { status: "active" } }
+  );
+  console.log(result);
+  return result;
+};
+
+// make Reject Status
+exports.makeRejectStatusinDb = async (productId) => {
+  const result = await Product.updateOne(
+    { _id: productId },
+    { $set: { status: "reject" } }
+  );
+  console.log(result);
   return result;
 };

@@ -13,6 +13,9 @@ const {
   getFeaturedInDb,
   getTreadingProductFromDb,
   putUpdateProductinDb,
+  getProductsForReviewfromDb,
+  makeRejectStatusinDb,
+  makeActiveStatusinDb,
 } = require("../services/products.service");
 
 // create product
@@ -261,8 +264,81 @@ exports.getReportedProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   try {
     const { _id } = req.params;
-    console.log(_id);
+
     const allProduct = await putUpdateProductinDb(_id, req.body);
+    res.status(200).json({
+      status: "success",
+      data: allProduct,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: "Couldn't get the Products",
+    });
+  }
+};
+// all product for review page
+exports.getAllProductInReviewPage = async (req, res) => {
+  try {
+    let filters = { ...req.query };
+    const excludeFields = ["limit", "sort", "page", "fields"];
+    excludeFields.forEach((field) => delete filters[field]);
+
+    const queries = {};
+    // separate sort and make fit for data query
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      queries.sortBy = sortBy;
+    }
+
+    // load specific property and value ( fields)
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").join(" ");
+      queries.fields = fields;
+    }
+    // pagination
+    if (req.query.page) {
+      const { page = 1, limit = 3 } = req.query;
+      const skip = (page - 1) * parseInt(limit);
+      queries.skip = skip;
+      queries.limit = limit;
+    }
+    const allProduct = await getProductsForReviewfromDb(filters, queries);
+    res.status(200).json({
+      status: "success",
+      data: allProduct,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: "Couldn't get the Products",
+    });
+  }
+};
+
+// make Active Status
+exports.makeActiveStatus = async (req, res) => {
+  try {
+    const { productId } = req.query;
+    console.log(productId);
+    const allProduct = await makeActiveStatusinDb(productId);
+    res.status(200).json({
+      status: "success",
+      data: allProduct,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: "Couldn't get the Products",
+    });
+  }
+};
+
+// make Reject Status
+exports.makeRejectStatus = async (req, res) => {
+  try {
+    const { productId } = req.query;
+    const allProduct = await makeRejectStatusinDb(productId);
     res.status(200).json({
       status: "success",
       data: allProduct,

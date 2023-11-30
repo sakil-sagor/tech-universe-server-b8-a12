@@ -81,8 +81,9 @@ const ProductSchema = mongoose.Schema(
       default: false,
     },
     status: {
-      type: Boolean,
-      default: false,
+      type: String,
+      enum: ["pending", "active", "raject"],
+      default: "pending",
     },
     report: [
       {

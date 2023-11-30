@@ -14,8 +14,17 @@ router.route("/featuredProducts").get(productsController.getFeaturedProducts);
 router.route("/all/:userEmail").get(productsController.getUserProduct);
 // get all reported content
 router.route("/reportedcontent").get(productsController.getReportedProduct);
+
+// product review all api
+router
+  .route("/allreviewproduct")
+  .get(productsController.getAllProductInReviewPage);
 // make up vote
 router.route("/upvote").put(productsController.creatUpVote);
+
+// handlel status active reject
+router.route("/statusActive").patch(productsController.makeActiveStatus);
+router.route("/statusReject").patch(productsController.makeRejectStatus);
 
 router.route("/:id").get(productsController.getSingleProduct);
 router.route("/:id/report").put(productsController.createProductReport);
