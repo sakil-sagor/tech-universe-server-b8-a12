@@ -25,4 +25,6 @@ router
   .delete(productsController.deleteProduct)
   .patch(productsController.makeFeatured);
 
+router.route("/updateProdut/:_id").put(productsController.updateProduct);
+
 module.exports = router;

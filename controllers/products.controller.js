@@ -12,6 +12,7 @@ const {
   getReportedProductInDb,
   getFeaturedInDb,
   getTreadingProductFromDb,
+  putUpdateProductinDb,
 } = require("../services/products.service");
 
 // create product
@@ -51,9 +52,11 @@ exports.createProduct = async (req, res) => {
 exports.getAllProduct = async (req, res) => {
   try {
     let filters = { ...req.query };
-    const excludeFields = ["limit", "sort", "page", "fields", "search"];
-    excludeFields.forEach((field) => delete filters[field]);
 
+    const excludeFields = ["limit", "sort", "page", "fields"];
+    excludeFields.forEach((field) => delete filters[field]);
+    const { search } = filters;
+    console.log(search);
     const queries = {};
     // separate sort and make fit for data query
     if (req.query.sort) {
@@ -73,7 +76,8 @@ exports.getAllProduct = async (req, res) => {
       queries.skip = skip;
       queries.limit = limit;
     }
-    const allProduct = await getProductFromDb(filters, queries);
+
+    const allProduct = await getProductFromDb(search, queries);
     res.status(200).json({
       status: "success",
       data: allProduct,
@@ -242,6 +246,23 @@ exports.makeFeatured = async (req, res) => {
 exports.getReportedProduct = async (req, res) => {
   try {
     const allProduct = await getReportedProductInDb();
+    res.status(200).json({
+      status: "success",
+      data: allProduct,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: "Couldn't get the Products",
+    });
+  }
+};
+// update  product
+exports.updateProduct = async (req, res) => {
+  try {
+    const { _id } = req.params;
+    console.log(_id);
+    const allProduct = await putUpdateProductinDb(_id, req.body);
     res.status(200).json({
       status: "success",
       data: allProduct,

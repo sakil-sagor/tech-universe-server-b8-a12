@@ -6,13 +6,28 @@ exports.createProductInDb = async (detials) => {
 };
 // get all products
 exports.getProductFromDb = async (filters, queries) => {
-  const result = await Product.find(filters)
-    .skip(queries.skip)
-    .limit(queries.limit);
+  const result = await Product.aggregate([
+    {
+      $match: {
+        "tags.text": filters, // Match the text property
+      },
+    },
+
+    // {
+    //   $skip: queries.skip, // Skip documents based on pagination
+    // },
+    // {
+    //   $limit: queries.limit, // Limit the number of documents returned
+    // },
+  ]);
+  // .skip(queries.skip)
+  // .limit(queries.limit);
   // .sort(queries.sortBy);
   const totalRoom = await Product.countDocuments(filters);
   const pageCount = Math.ceil(totalRoom / queries.limit);
+  console.log(result, totalRoom, pageCount);
   return { result, totalRoom, pageCount };
+  // return result;
 };
 
 // get single products
@@ -87,6 +102,12 @@ exports.makeFeaturedInDb = async (productId) => {
     { _id: productId },
     { $set: { featured: true } }
   );
+  return result;
+};
+// update products
+exports.putUpdateProductinDb = async (productId, details) => {
+  console.log(details);
+  const result = await Product.updateOne({ _id: productId }, { $set: details });
   return result;
 };
 
