@@ -23,11 +23,7 @@ const {
 exports.createProduct = async (req, res) => {
   try {
     // make the unique product id
-    const getLastProd = await Product.findOne(
-      {},
-      {},
-      { sort: { createdAt: -1 } }
-    );
+    const getLastProd = await Product.findOne().sort({ createdAt: -1 });
     const id = getLastProd?.productId;
     let productId;
     if (id) {
@@ -37,6 +33,7 @@ exports.createProduct = async (req, res) => {
     }
 
     const productDetails = { ...req.body, productId };
+
     const createdRoom = await createProductInDb(productDetails);
     res.status(200).json({
       status: "success",
