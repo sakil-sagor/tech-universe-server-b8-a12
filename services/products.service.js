@@ -1,9 +1,8 @@
 const Product = require("../models/Product");
 // create single product
 exports.createProductInDb = async (detials) => {
-  console.log(detials);
   const result = await Product.create(detials);
-  console.log(result);
+
   return result;
 };
 // get all products
@@ -151,7 +150,7 @@ exports.getReportedProductInDb = async () => {
 exports.makeActiveStatusinDb = async (productId) => {
   const result = await Product.updateOne(
     { _id: productId },
-    { $set: { status: "bactive" } }
+    { $set: { status: "active" } }
   );
 
   return result;
@@ -161,7 +160,7 @@ exports.makeActiveStatusinDb = async (productId) => {
 exports.makeRejectStatusinDb = async (productId) => {
   const result = await Product.updateOne(
     { _id: productId },
-    { $set: { status: "creject" } }
+    { $set: { status: "reject" } }
   );
 
   return result;

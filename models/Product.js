@@ -17,6 +17,30 @@ const ProductSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    originName: {
+      type: String,
+      required: true,
+    },
+    brandName: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    costingPrice: {
+      type: Number,
+      required: true,
+    },
+    offerRate: {
+      type: Number,
+      required: true,
+    },
+    regularPrice: {
+      type: Number,
+      required: true,
+    },
     productImage: {
       type: String,
       validate: {
@@ -82,7 +106,7 @@ const ProductSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["apending", "bactive", "creject"],
+      enum: ["pending", "active", "reject"],
       default: "pending",
     },
     report: [
